@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG Graph</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <svg :width="chartWidth" :height="chartHeight">
+            <!-- <circle cx="100" cy="100" r="80"></circle> -->
+            <circle :cy="y" :cx="x()" :r="d" />    
+        </svg>
+        <div>
+            <label>Enter Radis</label>
+            <input type="number" v-model="d" min="0" max="100" />
+            <label>Enter cy</label>
+            <input type="number" v-model="chartHeight" min="200" max="400" />
+            <label>Enter cx</label>
+            <input type="number" v-model="chartWidth" min="200" max="300" />
+
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                d: 20,
+                chartHeight: 200,
+                chartWidth: 200,
+            },
+            computed: {
+                y() {
+                    return this.chartHeight / 2;
+                },
+            },
+            methods: {
+                x() {
+                    return 130 + 50;
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -4,21 +4,26 @@
 <head>
     <title>SVG Graph</title>
     <script src="https://unpkg.com/vue"></script>
-    <link rel="stylesheet" type="text/css" href="/style.css" />
+
+
     <script type="text/x-template" id="polygraph-template">
         <g>
             <polygon :points="points"></polygon>
         </g>
     </script>
+
 </head>
 
 <body>
     <div id="demo">
         <!-- Use the component -->
         <svg width="250" height="250">
-        <polygraph :vertex="vertex"></polygraph>
-      </svg>
+            <polygraph :vertex="vertex"></polygraph>
+        </svg>
         <!-- controls -->
+        <p>
+            value should be 0 to 100, you can up and down the vertex value
+        </p>
         <div v-for="stat in vertex">
             <label>{{stat.label}}</label>
             <input type="number" v-model="stat.value" min="0" max="100" />
@@ -80,6 +85,7 @@
             }
         });
     </script>
+
 </body>
 
 </html>

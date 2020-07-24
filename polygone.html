@@ -8,15 +8,9 @@
     <script type="text/x-template" id="polygraph-template">
         <g>
             <polygon :points="points"></polygon>
-            <axis-label v-for="(stat, index) in stats" :stat="stat" :index="index" :total="stats.length">
-            </axis-label>
         </g>
     </script>
 
-    <!-- template for the axis label component. -->
-    <script type="text/x-template" id="axis-label-template">
-        <text :x="point.x" :y="point.y">{{stat.label}}</text>
-    </script>
 </head>
 
 <body>
@@ -29,10 +23,11 @@
         <!-- controls -->
         <div v-for="stat in stats">
             <label>{{stat.label}}</label>
-            <input type="text" v-model="stat.value" min="0" max="100" />
+            <input type="number" v-model="stat.value" min="0" max="100" />
             <button @click="remove(stat)" class="remove">X</button>
         </div>
         <br />
+        <p> you just input the Vertext name e.g "D" , </br>100 value will be set of the newer vertex</p>
         <form id="add">
             Add another vertex of the polygon
             <br />
@@ -52,6 +47,12 @@
         }, {
             label: "C",
             value: 100
+        }, {
+            label: "D",
+            value: 100
+        }, {
+            label: "F",
+            value: 100
         }];
 
         Vue.component("polygraph", {
@@ -68,24 +69,6 @@
                         .join(" ");
                 }
             },
-            components: {
-                "axis-label": {
-                    props: {
-                        stat: Object,
-                        index: Number,
-                        total: Number
-                    },
-                    template: "#axis-label-template",
-                    computed: {
-                        point: function() {
-                            return valueToPoint(+this.stat.value + 10,
-                                this.index,
-                                this.total
-                            );
-                        }
-                    }
-                }
-            }
         });
 
         function valueToPoint(value, index, total) {
@@ -119,7 +102,7 @@
                     this.newLabel = "";
                 },
                 remove: function(stat) {
-                    if (this.stats.length > 3) {
+                    if (this.stats.length > 5) {
                         this.stats.splice(this.stats.indexOf(stat), 1);
                     } else {
                         alert("Can't delete more!");
