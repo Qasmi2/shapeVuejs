@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG Graph</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script type="text/x-template" id="polygraph-template">
+        <g>
+            <polygon :points="points"></polygon>
+        </g>
+    </script>
+</head>
+
+<body>
+    <div id="demo">
+        <!-- Use the component -->
+        <svg width="250" height="250">
+        <polygraph :vertex="vertex"></polygraph>
+      </svg>
+        <!-- controls -->
+        <div v-for="stat in vertex">
+            <label>{{stat.label}}</label>
+            <input type="number" v-model="stat.value" min="0" max="100" />
+        </div>
+    </div>
+
+    <script>
+        // The raw data to observe
+        var vertex = [{
+            label: "A",
+            value: 100
+        }, {
+            label: "B",
+            value: 100
+        }, {
+            label: "C",
+            value: 100
+        }];
+
+        // A resusable polygon graph component
+        Vue.component("polygraph", {
+            props: ["vertex"],
+            template: "#polygraph-template",
+            computed: {
+                // a computed property for the polygon's points
+                points: function() {
+                    var total = this.vertex.length;
+                    return this.vertex
+                        .map(function(stat, i) {
+                            var point = valueToPoint(stat.value, i, total);
+                            return point.x + "," + point.y;
+                        })
+                        .join(" ");
+                }
+            }
+        });
+
+        // math helper...
+        function valueToPoint(value, index, total) {
+            var x = 0;
+            var y = -value * 1;
+            var angle = ((Math.PI * 2) / total) * index;
+            var cos = Math.cos(angle);
+            var sin = Math.sin(angle);
+            var tx = x * cos - y * sin + 100;
+            var ty = x * sin + y * cos + 100;
+            return {
+                x: tx,
+                y: ty
+            };
+        }
+
+        // bootstrap the demo
+        new Vue({
+            el: "#demo",
+            data: {
+                newLabel: "",
+                vertex: vertex
+            }
+        });
+    </script>
+</body>
+
+</html>
